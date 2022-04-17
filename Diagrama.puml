@@ -3,6 +3,7 @@
 DOCUMENTACIÓN: https://plantuml.com/use-case-diagram
 NOTA: GITHUB no renderiza este tipo de diagramas, sacar screenshot
 '/
+
 skinparam actorStyle awesome
 /'usecase (First usecase) as U1'/ /'esto es para usar los nombres más cortos'/
 /':First Actor: --> U1
@@ -14,15 +15,18 @@ Admin2 .. (hola)
 }'/
 
 "Usuario" as U
-package Empresa {
 
+package Empresa {
+left to right direction
 usecase UC2 as (Cargar Prenda)
 usecase UC3 as "Validar Prenda
 --
-Prenda Valida"
+Prenda No Valida"
 
 U -> UC2
-UC2 <.. UC3 :<<extends>>
+UC2 <- UC3 : <<includes>>
+UC3 <.(Aviso de Información Faltante) :<<extends>> /'Posible cambio de nombre'/
+UC3 <.(Aviso de Categoría Errónea) :<<extends>> /'Posible cambio de nombre'/
 
 }
 @enduml

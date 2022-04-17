@@ -26,3 +26,45 @@
 >"*Como usuarie de QuéMePongo, quiero evitar que haya prendas sin tipo, tela, categoría o color primario.*"
 
 >"*Como usuarie de QuéMePongo, quiero evitar que haya prendas cuya categoría no se condiga con su tipo. (Ej, una remera no puede ser calzado).*"
+
+## Pseudocódigo
+
+```java
+class Atuendo {
+    Prenda prendas;
+    
+    /*method generarAtuendo(Prenda prenda)
+        prendas.add(prenda);
+    }*/
+}
+
+class Prenda {
+    var tipo;
+    var color;
+    var material;
+    boolean colorSecundario;
+    
+    //TODO evitar nulls
+    //duda setter o constructor de material y tipo, color, y puede q secundario
+    /*method cargarPrenda(){
+        
+    }*/
+    
+    method getCategoria(){
+        return tipo.getCategoria();
+    }
+
+    method setAtributos() {
+        return ;
+    }
+    
+}
+
+class Tipo {
+    var categoría;
+    
+    method getCategoria(){
+        return categoria;
+    }
+}
+```
