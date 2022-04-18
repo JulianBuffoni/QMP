@@ -5,15 +5,6 @@ NOTA: GITHUB no renderiza este tipo de diagramas, sacar screenshot
 '/
 
 skinparam actorStyle awesome
-/'usecase (First usecase) as U1'/ /'esto es para usar los nombres más cortos'/
-/':First Actor: --> U1
-"Main Admin2" as Admin2
-package Paquete{'/
-/'"Main Admin" as Admin'/ /'esto es para usar los nombres de actores más cortos'/
-/'Admin-->(hola) : nota\nnota2
-Admin2 .. (hola)
-}'/
-
 "Usuario" as U
 
 package Empresa {

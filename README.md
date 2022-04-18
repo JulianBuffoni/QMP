@@ -33,31 +33,34 @@
 class Atuendo {
     Prenda prendas;
     
-    /*method generarAtuendo(Prenda prenda)
+    void generarAtuendo(Prenda prenda){
+      var atuendoValido = prendas.map(getCategoría()).contains(prenda.getCategoría());
+      if(atuendoValido) {
         prendas.add(prenda);
-    }*/
+      }
+    }
 }
 
 class Prenda {
     var tipo;
-    var color;
+    var colorPrincipal;
     var material;
-    boolean colorSecundario;
+    var colorSecundario;
     
-    //TODO evitar nulls
-    //duda setter o constructor de material y tipo, color, y puede q secundario
-    /*method cargarPrenda(){
-        
-    }*/
+    Prenda(var tipo, var colorPrincipal, var material, var ... colorSecundario){
+      this.tipo = tipo;
+      this.colorPrincipal = colorPrincipal;
+      this.material = material;
+      this.colorSecundario = colorSecundario;
+      
+      if(tipo==null || colorPrincipal==null|| material==null){
+        throw new IllegalArgumentException("Error - Atributo Faltante, no se cargó prenda");
+      }
+    }
     
     method getCategoria(){
         return tipo.getCategoria();
     }
-
-    method setAtributos() {
-        return ;
-    }
-    
 }
 
 class Tipo {
