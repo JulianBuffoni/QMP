@@ -1,13 +1,13 @@
 # QMP1
 
 ## Integrantes
-| Alumno                        | Legajo  |
-|-------------------------------|---------|
-| Bruno Juan Pablo              | 1768920 |
-| Buffoni Julian                | 1756760 |
-| Fusse Fausto                  | 1757519 |
-| Gette Delfina                 | 1722712 |
-| Riquelme Blaffet Pablo Daniel | 1632784 |
+| Alumno                         | Legajo  |
+|--------------------------------|---------|
+| Bruno, Juan Pablo              | 1768920 |
+| Buffoni, Julian                | 1756760 |
+| Fusse, Fausto                  | 1757519 |
+| Gette, Delfina                 | 1722712 |
+| Riquelme Blaffet, Pablo Daniel | 1632784 |
 
 ## User Stories
 
@@ -53,7 +53,7 @@ class Prenda {
       this.material = material;
       this.colorSecundario = colorSecundario;
       
-      if(tipo==null || colorPrincipal==null|| material==null){
+      if(tipo == null || colorPrincipal == null|| material == null){
         throw new IllegalArgumentException("Error - Atributo Faltante, no se cargó prenda");
       }
     }
