@@ -34,8 +34,8 @@ class Atuendo {
     Prenda prendas;
     
     void generarAtuendo(Prenda prenda){
-      var atuendoValido = prendas.map(getCategoría()).contains(prenda.getCategoría());
-      if(atuendoValido) {
+      var atuendoInvalido = prendas.map(getCategoría()).contains(prenda.getCategoría());
+      if(!atuendoInvalido) {
         prendas.add(prenda);
       }
     }
@@ -53,7 +53,7 @@ class Prenda {
       this.material = material;
       this.colorSecundario = colorSecundario;
       
-      if(tipo == null || colorPrincipal == null|| material == null){
+      if(tipo == NULL || colorPrincipal == NULL|| material == NULL){
         throw new IllegalArgumentException("Error - Atributo Faltante, no se cargó prenda");
       }
     }
