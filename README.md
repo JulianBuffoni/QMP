@@ -1,5 +1,4 @@
-# QMP1
-
+# QMP
 ## Integrantes
 | Alumno                         | Legajo  |
 |--------------------------------|---------|
@@ -10,6 +9,7 @@
 | Riquelme Blaffet, Pablo Daniel | 1632784 |
 
 ## User Stories
+### QMP1
 
 >"*Como usuarie de QuéMePongo, quiero poder cargar prendas válidas para generar atuendos con ellas.*"
 
@@ -27,35 +27,96 @@
 
 >"*Como usuarie de QuéMePongo, quiero evitar que haya prendas cuya categoría no se condiga con su tipo. (Ej, una remera no puede ser calzado).*"
 
+### QMP2
+>"*Como usuarie de QuéMePongo, quiero especificar qué trama tiene la tela de una prenda (lisa, rayada, con lunares, a cuadros o un estampado).*"
+
+>"*Como usuarie de QuéMePongo, quiero crear una prenda especificando primero de qué tipo es.*"
+
+>"*Como usuarie de QuéMePongo, quiero crear una prenda especificando en segundo lugar los aspectos relacionados a su material (colores, material, trama, etc) para evitar elegir materiales inconsistentes con el tipo de prenda.*"
+
+>"*Como usuarie de QuéMePongo, quiero guardar un borrador de la la última prenda que empecé a cargar para continuar después.*"
+
+>"*Como usuarie de QuéMePongo, quiero poder no indicar ninguna trama para una tela, y que por defecto ésta sea lisa.*"
+
+>"*Como usuarie de QuéMePongo, quiero poder guardar una prenda solamente si esta es válida.*"
+
+>"*Como usuario QueMePongo, quiero poder recibir sugerencias de uniformes armados.*"
+
+>"*Como usuario QueMePongo, quiero que un uniforme siempre conste de una prenda superior, una inferior y un calzado.*"
+
+>"*Como administrador de QueMePongo, quiero poder configurar diferentes uniformes para distintas instituciones (Ej: para el colegio San Juan debe ser una chomba verde de piqué, un pantalón de acetato gris y zapatillas blancas, mientras que para el Instituto Johnson siempre será una camisa blanca, pantalón de vestir negro y zapatos negros).*"
+
+
 ## Pseudocódigo
 
 ```java
 class Atuendo {
-    Prenda prendas;
+    List<Prenda> prendas;
     
-    void generarAtuendo(Prenda prenda){
-      var atuendoInvalido = prendas.map(getCategoría()).contains(prenda.getCategoría());
-      if(!atuendoInvalido) {
-        prendas.add(prenda);
-      }
+    Atuendo(List<Prenda> prendas){
+      validarAtuendo(prendas);
+      this.prendas = prendas;
     }
+
+    void validarAtuendo(List<Prenda> prendas){
+      boolean atuendoValido = prendas
+          .map(prenda -> prenda.getCategoria())
+          .containsAll([PARTE_SUPERIOR, PARTE_INFERIOR, CALZADO]);
+    
+     if(!atuendoValido){
+        throw new atuendoIncompleto("Atuendo necesita de una prenda superior, una inferior y un calzado");
+      }
+  }
+  
+}
+
+class Uniforme extends Atuendo {
+  String institucion;
+  
+  Uniforme(List<Prenda> prendas, String institucion){
+    super(prendas);
+    this.institucion=institucion;
+  }
+}
+
+class Negocio {
+  List<Prenda> prendasTotales;
+  List<Atuendo> uniformes;
+
+  void configurarUniforme(List<Prenda> prendas, String institucion){
+   uniformes.add(new Uniforme(prendas, institucion));
+  }
+  
+  void agregarPrenda(Prenda prenda){
+    prendasTotales.add(prenda);
+  }
+  
+  List<Prenda> sugerenciaDeUniforme() {
+    Prenda parteSuperior = prendasTotales.randomAt(prenda -> prenda.getCategoria() == PARTE_SUPERIOR);
+    Prenda parteInferior = prendasTotales.randomAt(prenda -> prenda.getCategoria() == PARTE_INFERIOR);
+    Prenda calzado = prendasTotales.randomAt(prenda -> prenda.getCategoria() == CALZADO);
+    Prenda accesorio = prendasTotales.randomAt(prenda -> prenda.getCategoria() == ACCESORIO);
+    validateNonNull(parteSuperior);
+    validateNonNull(parteInferior);
+    validateNonNull(calzado);
+    return Arrays.asList(new Prenda[]{parteSuperior,parteInferior,calzado,accesorio});
+  }
+  
 }
 
 class Prenda {
-    var tipo;
-    var colorPrincipal;
+    TipoPrenda tipoPrenda;
     var material;
-    var colorSecundario;
+    Color colorPrincipal;
+    Color colorSecundario;
+    Trama trama;
     
-    Prenda(var tipo, var colorPrincipal, var material, var ... colorSecundario){
-      this.tipo = tipo;
-      this.colorPrincipal = colorPrincipal;
+    Prenda(Tipo tipoPrenda, Material material, Trama trama, Color colorPrincipal, Color colorSecundario){
+      this.tipoPrenda = tipoPrenda;
       this.material = material;
+      this.trama = trama;
+      this.colorPrincipal = colorPrincipal;
       this.colorSecundario = colorSecundario;
-      
-      if(tipo == NULL || colorPrincipal == NULL|| material == NULL){
-        throw new IllegalArgumentException("Error - Atributo Faltante, no se cargó prenda");
-      }
     }
     
     method getCategoria(){
@@ -63,11 +124,90 @@ class Prenda {
     }
 }
 
-class Tipo {
-    var categoría;
+class Color {
+  int rojo, verde, azul;
+  
+  Color(var rojo, var verde, var azul){
+    this.rojo = rojo;
+    this.verde = verde;
+    this.azul = azul;
+  }
+}
+
+enum Categoria {
+  PARTE_SUPERIOR, CALZADO, PARTE_INFERIOR, ACCESORIOS;
+}
+
+enum NombreMaterial {
+  ALGODON, POLIESTER, LINO, LANA, SEDA, NYLON, LYCRA;
+}
+
+class TipoPrenda {
+    Categoria categoria;
+    
+    Tipo(Categoria categoria){
+      this.categoria=categoria;
+    }
     
     method getCategoria(){
         return categoria;
+    }
+}
+
+enum Trama {
+  LISA, RAYADA, LUNARES, CUADROS, ESTAMPADO;
+}
+
+class Material {
+  NombreMaterial material;
+  
+
+  Material(NombreMaterial material) {
+    this.material = material;
+  }
+  
+  method validarTipoPrenda(TipoPrenda tipoPrenda) {
+    if (!isConsistente(this, tipoPrenda)) {
+      throw new tipoInvalido("Tipo y Material de la prenda son inconsistentes");
+    }
+  }
+}
+  
+class Borrador {
+    TipoPrenda tipoPrenda;
+    var material;
+    Color colorPrincipal;
+    Color colorSecundario;
+    Trama trama;
+    
+    Borrador(TipoPrenda tipoDePrenda) {
+      validateNonNull(tipoDePrenda);
+      this.tipoDePrenda = tipoDePrenda;
+    }
+    
+    method especificarColorPrincipal(Color colorPrincipal){
+    validarNoNull(colorPrincipal);
+      this.colorPrincipal = colorPrincipal;
+    }
+
+    method especificarColorSecundario(Color colorSecundario){
+      validarNoNull(colorPrincipal);
+      this.colorPrincipal = colorSecundario;
+    }
+    
+    method especificarMaterial(Material material(Trama trama)) {
+      validateNonNull(material);
+      material.validarTipoPrenda(material);
+      this.material = material;
+    }
+
+  method especificarTrama(Trama trama) {
+    validateNonNull(trama);
+    this.trama = if trama is null then Trama.LISA else trama;
+  }
+
+    method crearPrenda(){
+       return new Prenda(tipo, material, colorPrincipal, colorSecundario);
     }
 }
 ```
