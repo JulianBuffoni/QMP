@@ -4,20 +4,23 @@ DOCUMENTACIÓN: https://plantuml.com/use-case-diagram
 NOTA: GITHUB no renderiza este tipo de diagramas, sacar screenshot
 '/
 
+/'QMP1'/
+
 skinparam actorStyle awesome
 "Usuario" as U
 
-package "Empresa - QMP1" {
+package "Negocio" {
 left to right direction
 usecase UC2 as (Cargar Prenda)
-usecase UC3 as "Validar Prenda
---
-Prenda No Valida"
-
+usecase UC3 as "Crear Borrador
+---
+Prenda Invalida"
+usecase UC4 as "Sugerencia de\nUniforme"
 U -> UC2
 UC2 <- UC3 : <<includes>>
-UC3 <.(Aviso de Información Faltante) :<<extends>> /'Posible cambio de nombre'/
-UC3 <.(Aviso de Categoría Errónea) :<<extends>> /'Posible cambio de nombre'/
+UC3 <.(Aviso de\nInconsistencia) :<<extends>>
+U -> UC4
+
 
 }
 @enduml
