@@ -80,7 +80,7 @@ class Uniforme extends Atuendo {
 }
 
 class Negocio {
-  List<Prenda> prendasTotales;
+  List<Prenda> prendas;
   List<Atuendo> uniformes;
 
   void configurarUniforme(List<Prenda> prendas, String institucion){
