@@ -51,32 +51,46 @@
 
 ```java
 class Atuendo {
-    List<Prenda> prendas;
-    
-    Atuendo(List<Prenda> prendas){
-      validarAtuendo(prendas);
-      this.prendas = prendas;
-    }
+  Prenda prendaSuperior;
+  Prenda prendaInferior;
+  Prenda calzado;
+  Prenda accesorio;
+  //List<Prenda> prendas;
 
-    void validarAtuendo(List<Prenda> prendas){
-      boolean atuendoValido = prendas
-          .map(prenda -> prenda.getCategoria())
-          .containsAll([PARTE_SUPERIOR, PARTE_INFERIOR, CALZADO]);
-    
-     if(!atuendoValido){
-        throw new atuendoIncompleto("Atuendo necesita de una prenda superior, una inferior y un calzado");
-      }
+  Atuendo(Prenda prendaSuperior, Prenda prendaInferior, Prenda calzado, Prenda accesorio) {
+    List<Prenda> prendas = Arrays.asList(new Prenda[]{parteSuperior, parteInferior, calzado, accesorio});
+    this.prendaSuperior;
+    this.prendaInferior;
+    this.calzado;
+    this.accesorio;
   }
-  
 }
 
 class Uniforme extends Atuendo {
-  String institucion;
   
-  Uniforme(List<Prenda> prendas, String institucion){
+  Uniforme(Prenda prendaSuperior, Prenda prendaInferior, Prenda calzado){
+    List<Prenda> prendas = Arrays.asList(new Prenda[]{parteSuperior,parteInferior,calzado, null});
+    validarUniforme(prendas);
     super(prendas);
-    this.institucion=institucion;
   }
+
+  void validarUniforme(List<Prenda> prendas){
+    boolean uniformeValido = prendas
+        .map(prenda -> prenda.getCategoria())
+        .containsAll([PARTE_SUPERIOR, PARTE_INFERIOR, CALZADO]);
+
+    if(!uniformeValido){
+      throw new uniformeIncompleto("Uniforme necesita de una prenda superior, una inferior y un calzado");
+    }
+  }
+}
+
+class Institucion {
+    List<Uniforme> uniformes;
+    
+    void crearUniforme(Prenda prendaSuperior, Prenda prendaInferior, Prenda calzado){
+      uniforme.add(new Uniforme(prendaSuperior, prendaInferior, calzado));
+    }
 }
 
 class Negocio {
@@ -206,7 +220,7 @@ class Borrador {
     this.trama = if trama is null then Trama.LISA else trama;
   }
 
-    method crearPrenda(){
+    method crear(){
        return new Prenda(tipo, material, colorPrincipal, colorSecundario);
     }
 }
