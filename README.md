@@ -111,6 +111,7 @@ class Prenda {
     Color colorSecundario;
     Trama trama;
     
+    // Se usa sólo por borrador
     Prenda(Tipo tipoPrenda, Material material, Trama trama, Color colorPrincipal, Color colorSecundario){
       this.tipoPrenda = tipoPrenda;
       this.material = material;
@@ -191,7 +192,6 @@ class Borrador {
     }
 
     method especificarColorSecundario(Color colorSecundario){
-      validarNoNull(colorPrincipal);
       this.colorPrincipal = colorSecundario;
     }
     
