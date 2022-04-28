@@ -4,7 +4,6 @@ DOCUMENTACIÓN: https://plantuml.com/use-case-diagram
 NOTA: GITHUB no renderiza este tipo de diagramas, sacar screenshot
 '/
 
-/'QMP1'/
 
 skinparam actorStyle awesome
 "Usuario" as U
@@ -16,10 +15,10 @@ usecase UC3 as "Crear Borrador
 ---
 Prenda Invalida"
 usecase UC4 as "Sugerencia de\nUniforme"
-U -> UC2
+U - UC2
 UC2 <- UC3 : <<includes>>
 UC3 <.(Aviso de\nInconsistencia) :<<extends>>
-U -> UC4
+U - UC4
 
 
 }
