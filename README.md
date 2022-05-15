@@ -46,6 +46,30 @@
 
 >"*Como administrador de QueMePongo, quiero poder configurar diferentes uniformes para distintas instituciones (Ej: para el colegio San Juan debe ser una chomba verde de piqué, un pantalón de acetato gris y zapatillas blancas, mientras que para el Instituto Johnson siempre será una camisa blanca, pantalón de vestir negro y zapatos negros).*"
 
+### QMP3
+>"*Como usuarie de QuéMePongo, quiero recibir sugerencias de atuendos para vestirme ajustándome a las condiciones climáticas con ropa de mi agrado.*"
+
+>"*Como usuarie de QuéMePongo, quiero recibir una sugerencia de prendas que me vista completamente (torso, piernas y pies).*"
+
+>"*Como usuarie de QuéMePongo, quiero que una sugerencia pueda incluir accesorios (guantes, gorros, bufandas, anteojos de sol, etc).*"
+
+>"*Como usuarie de QuéMePongo, quiero recibir varias sugerencias que combinen las prendas de mi guardarropas.*"
+
+>"*Como usuarie de QuéMePongo, quiero que una sugerencia cubra cada parte del cuerpo con no más de una prenda, es decir, evitando superposiciones.*"
+
+>"*Como usuario QueMePongo, quiero que al aparecer en una sugerencia, la aplicación asuma que una prenda ha sido usada.*"
+
+>"*Como usuario QueMePongo, quiero que luego de ser usada 2 veces, se considere a una prenda como “sucia”.*"
+
+>"*Como usuarie de QuéMePongo, quiero que una prenda “sucia” pueda usarse hasta 3 veces para luego ser considerada “percudida”.*"
+
+>"*Como usuarie de QuéMePongo, quiero que una prenda “percudida” no pueda ser nunca más sugerida.*"
+
+>"*Como usuarie de QuéMePongo, quiero indicar que una prenda ha sido puesta a lavar.*"
+
+>"*Como usuarie de QuéMePongo, quiero que una prenda “sucia” que es lavada, deje de estarlo.*"
+
+>"*Como usuarie de QuéMePongo, quiero que una prenda no pueda ser sugerida mientras está lavándose.*"
 
 ## Pseudocódigo
 
@@ -223,5 +247,17 @@ class Borrador {
     method crear(){
        return new Prenda(tipo, material, colorPrincipal, colorSecundario);
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 ```
