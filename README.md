@@ -88,7 +88,18 @@ class Atuendo {
     this.prendaSuperior;
     this.prendaInferior;
     this.calzado;
-    this.accesorio;
+    if(accesorio != NULL){
+      this.accesorio;
+    }
+  }
+  
+  method usar(){
+    prendaSuperior.usar();
+    prendaInferior.usar();
+    calzado.usar();
+    if(accesorio != NULL){
+      accesorio.usar();
+    }
   }
 }
 
@@ -342,17 +353,9 @@ class Usuario {
     validateNonNull(parteInferior);
     validateNonNull(calzado);
 
-    parteSuperior.usar();
-    parteInferior.usar();
-    calzado.usar();
-    if (conAccesorio){
-      accesorio.usar();
-      return new Atuendo(parteSuperior, parteInferior, calzado, accesorio);
-    } 
-    else{
-      return new Atuendo(parteSuperior, parteInferior, calzado);
-    }
-    
+    Atuendo atuendo = new Atuendo(parteSuperior, parteInferior, calzado, accesorio); 
+    atuendo.usar();
+    return atuendo;
   }
 
   List<Atuendo> sugerencias(boolean conAccesorio, int cantidad) {
