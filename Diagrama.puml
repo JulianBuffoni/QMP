@@ -15,10 +15,19 @@ usecase UC3 as "Crear Borrador
 ---
 Prenda Invalida"
 usecase UC4 as "Sugerencia de\nUniforme"
+usecase UC5 as "Sugerencia de\nAtuendo
+---
+---
+Con Accesorio
+---
+Multiples
+"
 U - UC2
 UC2 <- UC3 : <<includes>>
 UC3 <.(Aviso de\nInconsistencia) :<<extends>>
 U - UC4
+U - UC5
+UC5 <. (Sugerencia de Atuendos):<<extends>>
 
 
 }
