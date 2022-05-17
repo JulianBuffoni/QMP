@@ -201,12 +201,12 @@ abstract class EstadoPrenda{
   }
   
   method seUso(Prenda prenda){
-    if (prenda.getUsos() > maxCantUsos){
-      this.demasiadoUsada();
+    if (prenda.getUsos() == maxCantUsos){
+      this.demasiadoUsada(prenda);
     }
   }
 
-  abstract method demasiadoUsada(); // cada estado cambia al siguiente estado
+  abstract method demasiadoUsada(Prenda prenda); 
   
   method cambiarEstado(Prenda prenda, Estado nuevoEstado){
     prenda.setEstado(nuevoEstado);
@@ -214,7 +214,25 @@ abstract class EstadoPrenda{
   
 }
 
+class Limpia extends EstadoPrenda{
+  maxCantUsos = 2;
+  method demasiadoUsada(prenda){
+    this.cambiarEstaddo(prenda, new Sucia); 
+  }
+} 
 
+class Sucia extends EstadoPrenda{
+  maxCantUsos = 3;
+  method demasiadoUsada(prenda){
+    this.cambiarEstaddo(prenda, new Percudida); 
+  }
+} 
+
+class Percudida extends EstadoPrenda{
+  maxCantUsos = 0;
+  method demasiadoUsada(prenda){}
+  method seLavo(prenda){}
+} 
 
 
 class Color {
