@@ -88,9 +88,7 @@ class Atuendo {
     this.prendaSuperior;
     this.prendaInferior;
     this.calzado;
-    if(accesorio != NULL){
-      this.accesorio;
-    }
+    this.accesorio;
   }
   
   method usar(){
