@@ -148,6 +148,9 @@ class Prenda {
     Color colorPrincipal;
     Color colorSecundario;
     Trama trama;
+    EstadoPrenda estado;
+    Bool estaLavandose;
+    Int cantUsos;
     
     // Se usa sólo por borrador
     Prenda(Tipo tipoPrenda, Material material, Trama trama, Color colorPrincipal, Color colorSecundario){
@@ -161,7 +164,58 @@ class Prenda {
     method getCategoria(){
         return tipo.getCategoria();
     }
+    
+    method setEstado(EstadoPrenda nuevoEstado){
+      this.estado = nuevoEstado;
+    }
+    
+    method puedeUsarse(){
+        return this.estado != Percudida && !estaLavandose;
+    }
+    
+    method Lavar(){
+      estaLavandose = true;
+    }
+    
+    method terminoDeLavar(){
+      estaLavandose = false;
+      this.estado.seLavo(this);
+    }
+    
+    method usar(){
+      cantUsos ++;
+      estado.seUso(this);
+    }
+    
+    method getUsos(){
+      return cantUsos;
+    }
+    
 }
+
+abstract class EstadoPrenda{
+  int maxCantUsos;
+  
+  method seLavo(Prenda prenda){
+    cambiarEstado(new Limpia); //redefinir en Percudida
+  }
+  
+  method seUso(Prenda prenda){
+    if (prenda.getUsos() > maxCantUsos){
+      this.demasiadoUsada();
+    }
+  }
+
+  abstract method demasiadoUsada(); // cada estado cambia al siguiente estado
+  
+  method cambiarEstado(Prenda prenda, Estado nuevoEstado){
+    prenda.setEstado(nuevoEstado);
+  }
+  
+}
+
+
+
 
 class Color {
   int rojo, verde, azul;
@@ -247,17 +301,17 @@ class Borrador {
     method crear(){
        return new Prenda(tipo, material, colorPrincipal, colorSecundario);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
+
+
+class Usuario{
+
+  List<Prenda> guardarropa
+  
+  <Atuendo> sugerenciasAtuendos(){
+  
+  } 
+
+}
+
 ```
