@@ -203,7 +203,8 @@ abstract class EstadoPrenda {
     prenda.setEstado(new Limpia); //redefinir en Percudida
   }
 
-  method seUso(Prenda prenda) {
+  method 
+  (Prenda prenda) {
     if (prenda.getUsos() == maxCantUsos) {
       this.demasiadoUsada(prenda);
     }
@@ -341,12 +342,17 @@ class Usuario {
     validateNonNull(parteInferior);
     validateNonNull(calzado);
 
-    seUso(parteSuperior);
-    seUso(parteInferior);
-    seUso(calzado);
-    if (accesorio != null) seUso(accesorio);
+    parteSuperior.usar();
+    parteInferior.usar();
+    calzado.usar();
+    if (conAccesorio){
+      accesorio.usar();
+      return new Atuendo(parteSuperior, parteInferior, calzado, accesorio);
+    } 
+    else{
+      return new Atuendo(parteSuperior, parteInferior, calzado);
+    }
     
-    return new Atuendo(parteSuperior, parteInferior, calzado, accesorio);
   }
 
   List<Atuendo> sugerencias(boolean conAccesorio, int cantidad) {
