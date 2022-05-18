@@ -139,7 +139,7 @@ class Negocio {
   void agregarPrenda(Prenda prenda) {
     prendasTotales.add(prenda);
   }
-
+/*
   List<Prenda> sugerenciaDeUniforme() {
     Prenda parteSuperior = prendasTotales.randomAt(prenda -> prenda.getCategoria() == PARTE_SUPERIOR);
     Prenda parteInferior = prendasTotales.randomAt(prenda -> prenda.getCategoria() == PARTE_INFERIOR);
@@ -150,7 +150,7 @@ class Negocio {
     validateNonNull(calzado);
     return Arrays.asList(new Prenda[]{parteSuperior, parteInferior, calzado, accesorio});
   }
-
+*/
 }
 
 class Prenda {
