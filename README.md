@@ -359,7 +359,7 @@ class Borrador {
 
 //---
 
-class AsesorDeImagen {
+class Usuario {
 
   private List<Prenda> guardarropa;
 
@@ -386,7 +386,7 @@ class AsesorDeImagen {
     return resultado;
   }
 
-  public Atuendo sugerirAtuendoClima(String direccion) {
+  /*public Atuendo sugerirAtuendoClima(String direccion) {
     EstadoDelTiempo estadoDelTiempo = this.servicioMeteorologico()
         .obtenerCondicionesClimaticas(direccion);
     List<Atuendo> combinaciones = this.guardarropa.todasLasPosiblesCombinaciones()
@@ -395,6 +395,8 @@ class AsesorDeImagen {
         .first();
 
   }
+  
+   */
 
 }
 ```
