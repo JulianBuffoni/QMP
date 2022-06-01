@@ -112,6 +112,10 @@ class Atuendo {
       accesorio.usar();
     }
   }
+  public boolean aptoParaTemperatura(Temperatura temperatura){
+    List<Prenda> prendas = Arrays.asList(new Prenda[]{parteSuperior, parteInferior, calzado, accesorio});
+    return prendas.all(unaPrenda -> unaPrenda.esAptaParaTemperatura(temperatura));
+  }
 }
 
 class Uniforme extends Atuendo {
@@ -145,7 +149,7 @@ class Negocio {
   List<Prenda> prendas;
   List<Atuendo> uniformes;
 
-  void configurarUniforme(List<Prenda> prendas, String institucion) {
+  void configurarUniforme(List<Prenda> prendas, Institucion institucion) {
     uniformes.add(new Uniforme(prendas, institucion));
   }
 
@@ -163,6 +167,7 @@ class Prenda {
   EstadoPrenda estado;
   bool estaLavandose;
   int cantUsos;
+  private Temperatura temperaturaMaxima;
 
   // Se usa sólo por borrador
   public Prenda(Tipo tipoPrenda, Material material, Trama trama, Color colorPrincipal, Color colorSecundario) {
@@ -202,6 +207,9 @@ class Prenda {
 
   int getUsos() {
     return this.cantUsos;
+  }
+  public boolean aptaParaTemperatura(Temperatura temperatura){
+    return this.temperaturaMaxima < temperatura;
   }
 }
 
@@ -283,6 +291,7 @@ enum NombreMaterial {
 class TipoPrenda {
   private Categoria categoria;
 
+
   public TipoPrenda(Categoria categoria) {
     this.categoria = categoria;
   }
@@ -290,6 +299,7 @@ class TipoPrenda {
   public Categoria getCategoria() {
     return categoria;
   }
+
 }
 
 enum Trama {
@@ -349,10 +359,12 @@ class Borrador {
 
 //---
 
-class Usuario {
+class AsesorDeImagen {
 
   private List<Prenda> guardarropa;
-  
+
+  private ServicioMeteorologico servicioMeteorologico;
+
   public Atuendo sugerencia(boolean conAccesorio) {
     List<Prenda> guardarropaSinPercudidas = guardarropa.filter(unaPrenda -> unaPrenda.puedeUsarse());
     Prenda parteSuperior = guardarropaSinPercudidas.randomAt(prenda -> prenda.getCategoria() == PARTE_SUPERIOR);
@@ -373,5 +385,16 @@ class Usuario {
     for (int i = 0; i < cantidad; i++) resultado.add(sugerencia(conAccesorio));
     return resultado;
   }
+
+  public Atuendo sugerirAtuendoClima(String direccion) {
+    EstadoDelTiempo estadoDelTiempo = this.servicioMeteorologico()
+        .obtenerCondicionesClimaticas(direccion);
+    List<Atuendo> combinaciones = this.guardarropa.todasLasPosiblesCombinaciones()
+    return combinaciones
+        .filter(combinacion -> combinacion.aptaParaTemperatura(estadoDelTiempo.temperatura))
+        .first();
+
+  }
+
 }
 ```
