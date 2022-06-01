@@ -71,6 +71,20 @@
 
 >"*Como usuarie de QuéMePongo, quiero que una prenda no pueda ser sugerida mientras está lavándose.*"
 
+### QMP4
+
+>"*Como usuario de QuéMePongo, quiero recibir sugerencias de atuendos para vestirme ajustándome a las condiciones climáticas con ropa de mi agrado.*"
+
+>"*Como usuario de QuéMePongo, quiero poder conocer las condiciones climáticas de Buenos Aires en un momento dado para obtener sugerencias acordes.*"
+
+>"*Como usuario de QuéMePongo, quiero poder recibir sugerencias de atuendos que tengan una prenda para cada categoría, aunque a futuro podrán tener más. (Ej.: Una remera, un pantalón, zapatos y un gorro)*"
+
+>"*Como usuario de QuéMePongo, quiero que al generar una sugerencia las prendas sean acordes a la temperatura actual sabiendo que para cada prenda habrá una temperatura hasta la cual es adecuada. (Ej.: “Remera de mangas largas” no es apta a más de 20°C)*"
+
+>"*Como administrador de QuéMePongo, quiero poder configurar fácilmente diferentes servicios de obtención del clima para ajustarme a las cambiantes condiciones económicas.*"
+
+>"*Como stakeholder de QuéMePongo, quiero poder asegurar la calidad de mi aplicación sin incurrir en costos innecesarios.*"
+
 ## Pseudocódigo
 
 ```java
@@ -81,9 +95,8 @@ class Atuendo {
   Prenda prendaInferior;
   Prenda calzado;
   Prenda accesorio;
-  //List<Prenda> prendas;
 
-  Atuendo(Prenda prendaSuperior, Prenda prendaInferior, Prenda calzado, Prenda accesorio) {
+  public Atuendo(Prenda prendaSuperior, Prenda prendaInferior, Prenda calzado, Prenda accesorio) {
     List<Prenda> prendas = Arrays.asList(new Prenda[]{parteSuperior, parteInferior, calzado, accesorio});
     this.prendaSuperior;
     this.prendaInferior;
@@ -91,7 +104,7 @@ class Atuendo {
     this.accesorio;
   }
   
-  method usar(){
+  void usar(){
     prendaSuperior.usar();
     prendaInferior.usar();
     calzado.usar();
@@ -103,7 +116,7 @@ class Atuendo {
 
 class Uniforme extends Atuendo {
 
-  Uniforme(Prenda prendaSuperior, Prenda prendaInferior, Prenda calzado) {
+  public Uniforme(Prenda prendaSuperior, Prenda prendaInferior, Prenda calzado) {
     List<Prenda> prendas = Arrays.asList(new Prenda[]{parteSuperior, parteInferior, calzado, null});
     validarUniforme(prendas);
     super(prendas);
@@ -139,118 +152,120 @@ class Negocio {
   void agregarPrenda(Prenda prenda) {
     prendasTotales.add(prenda);
   }
-/*
-  List<Prenda> sugerenciaDeUniforme() {
-    Prenda parteSuperior = prendasTotales.randomAt(prenda -> prenda.getCategoria() == PARTE_SUPERIOR);
-    Prenda parteInferior = prendasTotales.randomAt(prenda -> prenda.getCategoria() == PARTE_INFERIOR);
-    Prenda calzado = prendasTotales.randomAt(prenda -> prenda.getCategoria() == CALZADO);
-    Prenda accesorio = prendasTotales.randomAt(prenda -> prenda.getCategoria() == ACCESORIO);
-    validateNonNull(parteSuperior);
-    validateNonNull(parteInferior);
-    validateNonNull(calzado);
-    return Arrays.asList(new Prenda[]{parteSuperior, parteInferior, calzado, accesorio});
-  }
-*/
 }
 
 class Prenda {
   TipoPrenda tipoPrenda;
-  var material;
+  Material material;
   Color colorPrincipal;
   Color colorSecundario;
   Trama trama;
   EstadoPrenda estado;
-  Bool estaLavandose;
-  Int cantUsos;
+  bool estaLavandose;
+  int cantUsos;
 
   // Se usa sólo por borrador
-  Prenda(Tipo tipoPrenda, Material material, Trama trama, Color colorPrincipal, Color colorSecundario) {
+  public Prenda(Tipo tipoPrenda, Material material, Trama trama, Color colorPrincipal, Color colorSecundario) {
     this.tipoPrenda = tipoPrenda;
     this.material = material;
     this.trama = trama;
     this.colorPrincipal = colorPrincipal;
     this.colorSecundario = colorSecundario;
     this.estado = new Limpia();
-
   }
 
-  method getCategoria() {
+  Categoria getCategoria() {
     return tipo.getCategoria();
   }
 
-  method setEstado(EstadoPrenda nuevoEstado) {
+  void setEstado(EstadoPrenda nuevoEstado) {
     this.estado = nuevoEstado;
   }
 
-  method puedeUsarse() {
-    return this.estado != Percudida && !estaLavandose;
+  bool puedeUsarse() {
+    return this.estado.maxCantUsos > 0 && !estaLavandose;
   }
 
-  method Lavar() {
-    estaLavandose = true;
+  void Lavar() {
+    this.estaLavandose = true;
   }
 
-  method terminoDeLavar() {
+  void terminoDeLavar() {
     this.estado.seLavo(this);
-    estaLavandose = false;
+    this.estaLavandose = false;
   }
 
-  method usar() {
-    cantUsos++;
-    estado.seUso(this);
+  void usar() {
+    this.cantUsos++;
+    this.estado.seUso(this);
   }
 
-  method getUsos() {
-    return cantUsos;
+  int getUsos() {
+    return this.cantUsos;
   }
 }
 
 abstract class EstadoPrenda {
-  int maxCantUsos;
+  protected int maxCantUsos;
 
-  method seLavo(Prenda prenda) {
-    prenda.setEstado(new Limpia); //redefinir en Percudida
+  void seLavo(Prenda prenda) {
+    prenda.setEstado(new Limpia()); //redefinir en Percudida
   }
 
-  method 
-  (Prenda prenda) {
+  method (Prenda prenda) {
     if (prenda.getUsos() == maxCantUsos) {
       this.demasiadoUsada(prenda);
     }
   }
 
-  abstract method demasiadoUsada(Prenda prenda);
+  abstract void demasiadoUsada(Prenda prenda);
 }
 
 class Limpia extends EstadoPrenda {
-  int maxCantUsos = 2;
+//    int maxCantUsos = 2;
+  
+  public Limpia() {
+    this.maxCantUsos = 2;
+  }
 
-  method demasiadoUsada(prenda) {
-    prenda.setEstado(new Sucia);
+  @Override
+  void demasiadoUsada(Prenda prenda) {
+    prenda.setEstado(new Sucia());
   }
 }
 
 class Sucia extends EstadoPrenda {
-  int maxCantUsos = 3;
+//  int maxCantUsos = 3;
 
-  public method demasiadoUsada(prenda) {
-    prenda.setEstado(new Percudida);
+  public Sucia() {
+    this.maxCantUsos = 3;
+  }
+  
+  @Override
+  public void demasiadoUsada(Prenda prenda) {
+    prenda.setEstado(new Percudida());
   }
 }
 
 class Percudida extends EstadoPrenda {
-  int maxCantUsos = 0;
+//  int maxCantUsos = 0;
+  
+  public Percudida() {
+    this.maxCantUsos = 0;
+  }
 
-  method demasiadoUsada(prenda) {}
+  @Override
+  public void demasiadoUsada(Prenda prenda) {}
 
-  override method seLavo(prenda) {}
+  @Override
+  public void seLavo(Prenda prenda) {}
 }
 
 
 class Color {
-  int rojo, verde, azul;
+  private final int rojo, verde, azul;
 
-  public Color(var rojo, var verde, var azul) {
+  public Color(int rojo, int verde, int azul) {
     this.rojo = rojo;
     this.verde = verde;
     this.azul = azul;
@@ -266,13 +281,13 @@ enum NombreMaterial {
 }
 
 class TipoPrenda {
-  Categoria categoria;
+  private Categoria categoria;
 
-  public Tipo(Categoria categoria) {
+  public TipoPrenda(Categoria categoria) {
     this.categoria = categoria;
   }
 
-  method getCategoria() {
+  public Categoria getCategoria() {
     return categoria;
   }
 }
@@ -282,14 +297,13 @@ enum Trama {
 }
 
 class Material {
-  NombreMaterial material;
+  private NombreMaterial material;
 
-
-  pubMaterial(NombreMaterial material) {
+  public Material(NombreMaterial material) {
     this.material = material;
   }
 
-  method validarTipoPrenda(TipoPrenda tipoPrenda) {
+  public void validarTipoPrenda(TipoPrenda tipoPrenda) {
     if (!isConsistente(this, tipoPrenda)) {
       throw new tipoInvalido("Tipo y Material de la prenda son inconsistentes");
     }
@@ -297,40 +311,38 @@ class Material {
 }
 
 class Borrador {
-  TipoPrenda tipoPrenda;
-  var material;
-  Color colorPrincipal;
-  Color colorSecundario;
-  Trama trama;
+  private TipoPrenda tipoPrenda;
+  private Material material;
+  private Color colorPrincipal;
+  private Color colorSecundario;
+  private Trama trama;
 
-  Borrador(TipoPrenda tipoDePrenda) {
+  public Borrador(TipoPrenda tipoDePrenda) {
     validateNonNull(tipoDePrenda);
     this.tipoDePrenda = tipoDePrenda;
   }
 
-  method especificarColorPrincipal(Color colorPrincipal) {
+  public void especificarColorPrincipal(Color colorPrincipal) {
     validarNoNull(colorPrincipal);
     this.colorPrincipal = colorPrincipal;
   }
 
-  method especificarColorSecundario(Color colorSecundario) {
+  public Color especificarColorSecundario(Color colorSecundario) {
     this.colorPrincipal = colorSecundario;
   }
 
-  method especificarMaterial(Material material(Trama trama))
-
-  {
+  public void especificarMaterial(Material material) {
     validateNonNull(material);
     material.validarTipoPrenda(material);
     this.material = material;
   }
 
-  method especificarTrama(Trama trama) {
+  public void especificarTrama(Trama trama) {
     validateNonNull(trama);
-    this.trama = if trama is null then Trama.LISA else trama;
+    this.trama = trama == null ? Tram.LISA : this.trama;
   }
 
-  method crear() {
+  public Prenda crear() {
     return new Prenda(tipo, material, colorPrincipal, colorSecundario);
   }
 }
@@ -339,9 +351,9 @@ class Borrador {
 
 class Usuario {
 
-  List<Prenda> guardarropa;
+  private List<Prenda> guardarropa;
   
-  Atuendo sugerencia(boolean conAccesorio) {
+  public Atuendo sugerencia(boolean conAccesorio) {
     List<Prenda> guardarropaSinPercudidas = guardarropa.filter(unaPrenda -> unaPrenda.puedeUsarse());
     Prenda parteSuperior = guardarropaSinPercudidas.randomAt(prenda -> prenda.getCategoria() == PARTE_SUPERIOR);
     Prenda parteInferior = guardarropaSinPercudidas.randomAt(prenda -> prenda.getCategoria() == PARTE_INFERIOR);
@@ -356,7 +368,7 @@ class Usuario {
     return atuendo;
   }
 
-  List<Atuendo> sugerencias(boolean conAccesorio, int cantidad) {
+  public List<Atuendo> sugerencias(boolean conAccesorio, int cantidad) {
     List<Atuendo> resultado = new ArrayList<>();
     for (int i = 0; i < cantidad; i++) resultado.add(sugerencia(conAccesorio));
     return resultado;
