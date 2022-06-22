@@ -87,7 +87,7 @@
 
 ### QMP5
 
->"*Como usuarie de QuéMePongo, quiero compartir mis guardarropas con otras personas.
+>"*Como usuarie de QuéMePongo, quiero compartir mis guardarropas con otras personas.*"
 
 >"*Como usuarie de QuéMePongo, quiero poder manejar varios guardarropas para separar mis prendas según diversos criterios (ropa de viaje, ropa de entrecasa, etc).*"
 
@@ -100,6 +100,26 @@
 >"*Como usuarie de QuéMePongo, necesito ver todas las propuestas de modificación (agregar o quitar prendas) del guardarropas y poder aceptarlas o rechazarlas.*"
 
 >"*Como usuarie de QuéMePongo, quiero poder deshacer las propuestas de modificación que haya aceptado.*"
+
+>"*Como usuarie de QueMePongo quiero poder enterarme si se emitió alguna alerta meteorológica para poder actuar en consecuencia.*"
+
+>"*Como usuarie de QueMePongo quiero tener una sugerencia diaria de qué ponerme y que  todas las mañanas, diariamente, esta sea actualizada.*"
+
+>"*Como empleade de QueMePongo quiero poder disparar el cálculo de sugerencias diarias para todos los usuarios para poder ejecutar esta acción a principio de cada día.*"
+
+>"*Como usuarie de QueMePongo, quiero poder conocer cuáles son las últimas alertas meteorológicas publicadas en el sistema para estar informado (pudiendo verlas, por ejemplo, al entrar en quemepongo.com)*"
+
+>"*Como empleade de QueMePongo, necesito poder disparar un proceso que consulte y actualice la lista de alertas publicadas en el sistema para tener control sobre cuándo se publican las mismas.*"
+
+>"*Como usuarie de QuéMePongo quiero que se actualice mi sugerencia diaria con las condiciones climáticas actualizadas cuando se genere algún alerta durante el día.*"
+
+>"*Como usuarie de QueMePongo quiero tener la posibilidad de que ante una alerta de tormenta la app me notifique que debo llevarme también un paraguas
+
+>"*Como usuarie de QueMePongo quiero que ante una alerta meteorológica de granizo la app  me notifique que evite salir en auto.*"
+
+>"*Como usuarie de QueMePongo quiero poder recibir un mail avisándome si se generó algún alerta meteorológico y cuál.*"
+
+>"*Como usuarie de QuéMePongo quiero poder configurar cuáles de estas acciones (notificaciones, mail, recálculo) quiero que se ejecuten y cuáles no, además de soportar nuevas acciones a futuro. (No nos interesará, sin embargo, soportar nuevas alertas)*"
 
 
 ## Pseudocódigo
@@ -392,7 +412,7 @@ class Usuario {
     validateNonNull(parteInferior);
     validateNonNull(calzado);
 
-    Atuendo atuendo = new Atuendo(parteSuperior, parteInferior, calzado, accesorio); 
+    Atuendo atuendo = new Atuendo(parteSuperior, parteInferior, calzado, accesorio);
     atuendo.usar();
     return atuendo;
   }
@@ -402,18 +422,132 @@ class Usuario {
     for (int i = 0; i < cantidad; i++) resultado.add(sugerencia(conAccesorio));
     return resultado;
   }
+}
+```
 
-  /*public Atuendo sugerirAtuendoClima(String direccion) {
-    EstadoDelTiempo estadoDelTiempo = this.servicioMeteorologico()
-        .obtenerCondicionesClimaticas(direccion);
-    List<Atuendo> combinaciones = this.guardarropa.todasLasPosiblesCombinaciones()
-    return combinaciones
-        .filter(combinacion -> combinacion.aptaParaTemperatura(estadoDelTiempo.temperatura))
-        .first();
+```java
+//QMP6
 
+import domain.AccuWeatherAPI;
+import domain.ServicioMeteorologico;
+
+import java.time.LocalDateTime;
+
+class ServicioMeteorologico {
+  private String email;
+  List<Alerta> alertas;
+  List<Accion> configs;
+  Atuendo sugerencia;
+  AccuWeatherAPI api = new AccuWeatherAPI();
+
+  ServicioMeteorologico() {
+  }
+
+  void setConfigs(List<Accion> acciones) {
+    this.acciones = acciones;
+  }
+
+  void recalcularAlerta() {
+    this.alertas = alertas.get("CurrentAlerts");
+  }
+
+  List<Alerta> getAlertas() {
+    return alertas;
+  }
+
+  List<Accion> getConfigs(List<Accion> acciones) {
+    return this.configs;
   }
   
-   */
+  void ejecutar() {
+    configs.forEach(i -> i.ejecutar(this));
+  }
 
+  String getEmail() {
+    return this.email;
+  }
+
+  Atuendo getSugerenciaDiaria() {
+    return sugerencia;
+  }
+  
+  void recalcularSugerenciaDiaria() {
+    calcularSugerencia(api.get("PrecipitationProbability"), api.get("Temperature"));
+  }
+
+}
+
+class Usuario {
+  private String email;
+  ServicioMeteorologico servicio;
+  private List<Accion> configs;
+
+  Usuario(String email, List<Accion> configs) {
+    this.email = email;
+    this.configs = configs;
+    servicio = new ServicioMeteorologico(email);
+  }
+
+  void verSugerencia() {
+    return servicio.getSugerenciaDiaria();
+  }
+  
+  void setConfigs(List<Accion> configs) {
+    servicio.setConfig(this.configs);
+  }
+
+  List<Alerta> verAlertas() {
+    return servicio.getAlertas();
+  }
+
+  List<Accion> getAcciones() {
+    return servicio.getConfigs();
+  }
+
+}
+
+class Empleado {
+  ServicioMeteorologico servicio = new ServicioMeteorologico();
+
+  Empleado() {
+  }
+  
+  void ejecutar() {
+    servicio.ejecutar();
+  }
+}
+
+enum Alerta {
+  TORMENTA,
+  GRANIZO
+}
+
+interface Accion {
+  void ejecutar(ServicioMeteorologico servicio);
+}
+
+class Mail implements Accion {
+  void ejecutar(ServicioMeteorologico servicio) {
+    send(servicio.getEmail(), servicio.getAlertas());
+  }
+
+}
+
+class Notificacion implements Accion {
+  void ejecutar(ServicioMeteorologico servicio) {
+    notify(servicio.getAlertas());
+  }
+}
+
+class RecalculoSugerencia implements Accion {
+  void ejecutar(ServicioMeteorologico servicio) {
+    this.recalcularSugerencia();
+  }
+}
+
+class RecalculoAlerta implements Accion {
+  void ejecutar(ServicioMeteorologico servicio) {
+    servicio.recalcularAlertas();
+  }
 }
 ```
