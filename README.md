@@ -449,6 +449,7 @@ class ServicioMeteorologico {
 
   void recalcularAlerta() {
     this.alertas = alertas.get("CurrentAlerts");
+    if(configs.anyMatch(i -> RecalculoSugerencia.isIntance(i))) recalcularSugerenciaDiaria() ;
   }
 
   List<Alerta> getAlertas() {
@@ -459,8 +460,8 @@ class ServicioMeteorologico {
     return this.configs;
   }
   
-  void ejecutar() {
-    configs.forEach(i -> i.ejecutar(this));
+  void ejecutar(Accion accion) {
+    if(configs.anyMatch(i -> accion.getClass().isIntance(i))) accion.ejecutar(this);
   }
 
   String getEmail() {
@@ -513,7 +514,7 @@ class Empleado {
   }
   
   void ejecutar() {
-    servicio.ejecutar();
+    servicio.ejecutar(Accion accion);
   }
 }
 
